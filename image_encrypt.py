@@ -24,6 +24,12 @@ for i in range(1, m):
         green = green + "&" + str(g)
         blue = blue + "&" + str(b)
 
+f = open("encrypt_file.txt", "a")
+f.write(red)
+f.write(green)
+f.write(blue)
+f.close()
+
 blank_img = np.zeros(shape=[100,300,3], dtype=np.uint8)
 
 print(red)
