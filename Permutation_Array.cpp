@@ -1,36 +1,45 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-vector<int> create_permutation(int height, int width){
-    int i = 0, total_pixel = height*width;
-    map<int, int> m;
-    vector<int> per(total_pixel, 0);
-    while(m.size() < total_pixel){
-        int num = rand()%total_pixel;
-        if(m.find(num) == m.end()){
-            m[num] = 1;
-            per[i++] = num;
-        }
+typedef long long int lli;
+
+vector<lli> create_permutation(lli height, lli width){
+    lli i = 0, total_pixel = height*width, j = 0;
+    map<lli, lli> m;
+    vector<lli> per(total_pixel, 0);
+    for(i=0; i<=total_pixel; i++){
+        per[i] = i;
     }
+    unsigned seed = 0;
+    shuffle(per.begin(), per.end(), default_random_engine(seed));
+//    while(m.size() < total_pixel){
+//        lli num = rand()%total_pixel;
+//        if(m.find(num) == m.end()){
+//            m[num] = 1;
+//            per[i++] = num;
+//        }
+//        ++j;
+//        cout<<j<<endl;
+//    }
     return per;
 }
 
-vector<vector<int>> create_random_color_permutation(int height, int width){
-    int i, j, max_color_value = 255, total_pixel = height*width;
-    vector<vector<int>> color(height, vector<int>(width, 0));
+vector<vector<lli>> create_random_color_permutation(lli height, lli width){
+    lli i, j, max_color_value = 255, total_pixel = height*width;
+    vector<vector<lli>> color(height, vector<lli>(width, 0));
     for(i=0; i<height; i++){
         for(j=0; j<width; j++){
-            int num = (rand())%max_color_value;
+            lli num = (rand())%max_color_value;
             color[i][j] = num;
         }
     }
     return color;
 }
 
-void create_color_S_Box_csv_file(int height, int width, vector<vector<int>> color, string file_name){
+void create_color_S_Box_csv_file(lli height, lli width, vector<vector<lli>> color, string file_name){
     ofstream file;
     file.open(file_name);
-    int i, j;
+    lli i, j;
     for(i=0; i<height; i++){
         for(j=0; j<width; j++){
             file<<color[i][j]<<",";
@@ -40,10 +49,10 @@ void create_color_S_Box_csv_file(int height, int width, vector<vector<int>> colo
     file.close();
 }
 
-void craete_permutation_table_csv_file(vector<int> per, int height, int width, string file_name){
+void craete_permutation_table_csv_file(vector<lli> per, lli height, lli width, string file_name){
     ofstream file;
     file.open(file_name);
-    int i, j, k = 0;
+    lli i, j, k = 0;
     for(i=0; i<height; i++){
         for(j=0; j<width; j++){
             file<<per[k++]<<",";
@@ -54,13 +63,16 @@ void craete_permutation_table_csv_file(vector<int> per, int height, int width, s
 }
 
 int main(){
-    int N, height = 100, width = 300;
-    int i, j;
+    lli N, height = 525, width = 525;
+    lli i, j;
 
     //-------------------- Color Shuffle Box ---------------------------------
-    vector<vector<int>> red_per = create_random_color_permutation(100, 300);
-    vector<vector<int>> blue_per = create_random_color_permutation(100, 300);
-    vector<vector<int>> green_per = create_random_color_permutation(100, 300);
+    vector<vector<lli>> red_per = create_random_color_permutation(height, width);
+    cout<<"Red Permutation generated\n"<<endl;
+    vector<vector<lli>> blue_per = create_random_color_permutation(height, width);
+    cout<<"Blue Permutation generated\n"<<endl;
+    vector<vector<lli>> green_per = create_random_color_permutation(height, width);
+    cout<<"Green Permutation generated\n"<<endl;
     //-------------------------------------------------------------------------
 
     //------------------ Create CSV File of shuffle matrix --------------------
@@ -70,8 +82,9 @@ int main(){
     //-------------------------------------------------------------------------
 
     //------------------ Create Permutation Matrix ----------------------------
-    vector<int> intial_permutaion = create_permutation(height, width);
-    craete_permutation_table_csv_file(intial_permutaion, height, width, "Intial_Permutation.csv");
+    vector<lli> initial_permutaion = create_permutation(height, width);
+    craete_permutation_table_csv_file(initial_permutaion, height, width, "Initial_Permutation.csv");
+    cout<<"Initial Permutation generated\n"<<endl;
     //-------------------------------------------------------------------------
     return 0;
 }

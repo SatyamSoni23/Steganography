@@ -10,7 +10,7 @@ import numpy as np
 import cv2
 import csv
 
-img = cv2.imread('abc.jpg', cv2.IMREAD_COLOR)
+img = cv2.imread('qrcode.png', cv2.IMREAD_COLOR)
 key = input("Enter Password\n")
 s = len(key)
 print(s)
@@ -45,7 +45,7 @@ for i in blue_arr:
 
 """---------------------- Importing Initial Permutation -----------------"""
 
-permute = open('Intial_Permutation.csv', 'r')
+permute = open('Initial_Permutation.csv', 'r')
 intial_permute = csv.reader(permute, delimiter = ',')
 intial_permute_data = []
 for i in intial_permute:
@@ -71,7 +71,7 @@ for i in range(0, m):
 
 
 """---------------------------- Shuffle pixel ----------------------------"""
-encrypted_img = np.zeros(shape=[100,300,3], dtype=np.uint8)
+encrypted_img = np.zeros(shape=[525,525,3], dtype=np.uint8)
 for i in range(0, m):
     for j in range(0, n):
         val = int(intial_permute_data[i][j])
@@ -82,7 +82,7 @@ for i in range(0, m):
 
 
 """--------------------------- Decrypting Color --------------------------"""
-decrypt_shuffle = np.zeros(shape=[100,300,3], dtype=np.uint8)
+decrypt_shuffle = np.zeros(shape=[525,525,3], dtype=np.uint8)
 for i in range(0, m):
     for j in range(0, n):
         val = int(intial_permute_data[i][j])
@@ -90,7 +90,7 @@ for i in range(0, m):
         col = val%n;
         decrypt_shuffle[row, col] = encrypted_img[i, j]
 
-decrypted_img = np.zeros(shape=[100,300,3], dtype=np.uint8)
+decrypted_img = np.zeros(shape=[525,525,3], dtype=np.uint8)
 for i in range(0, m):
     for j in range(0, n):
         r, g, b = decrypt_shuffle[i, j]
@@ -115,6 +115,9 @@ print(imageToText(decrypted_img))
 
 
 """--------------------------------- Output ------------------------------"""
+cv2.imwrite('Encrypted Image.png', encrypted_img)
+cv2.imwrite('Decrypted Image.png', decrypted_img)
+
 cv2.imshow('Encrypted',encrypted_img)
 cv2.imshow('Decrypted', decrypted_img)
 cv2.waitKey(0)
